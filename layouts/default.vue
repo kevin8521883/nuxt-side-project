@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Header></Header>
+    <Header class="sticky top-0"></Header>
     <Nuxt class="main" />
     <Footer></Footer>
     <!-- <Header class="sticky top-0 z-10"></Header>
