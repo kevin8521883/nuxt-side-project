@@ -17,20 +17,25 @@
           <font-awesome-icon icon="x" class="cursor-pointer" @click="showSidebar" />
         </div>
         <ul class="">
-          <li class="py-2 px-5 hover:bg-gray-200 delay cursor-pointer">header</li>
+          <router-link
+            class="py-2 px-5 hover:bg-gray-200 delay cursor-pointer block"
+            to="/"
+            >header</router-link
+          >
           <li class="py-2 px-5 hover:bg-gray-200 delay cursor-pointer">page2</li>
           <li class="py-2 px-5 hover:bg-gray-200 delay cursor-pointer">page3</li>
           <li class="py-2 px-5 hover:bg-gray-200 delay cursor-pointer">page4</li>
         </ul>
       </div>
       <ul class="hidden sm:flex">
-        <li class="mr-3">header</li>
+        <router-link class="mr-3" to="/">header</router-link>
         <li class="mr-3">page2</li>
         <li class="mr-3">page3</li>
         <li class="mr-3">page4</li>
       </ul>
     </div>
-    <div class="font-bold cursor-pointer" @click="loginPage">登入</div>
+    <div class="font-bold cursor-pointer" @click="logout" v-if="jwt">登出</div>
+    <div class="font-bold cursor-pointer" @click="loginPage" v-else>登入</div>
   </div>
 </template>
 <script>
@@ -40,6 +45,10 @@ export default {
       show: false,
     };
   },
+  mounted() {
+    this.$store.dispatch("SET_JWT_STATUS", localStorage.getItem("jwt_token"));
+    // console.log(localStorage.getItem("jwt_token"));
+  },
   methods: {
     showSidebar() {
       this.show = !this.show;
@@ -47,6 +56,15 @@ export default {
     },
     loginPage() {
       this.$router.push("/login");
+    },
+    logout() {
+      localStorage.removeItem("jwt_token");
+      this.$store.dispatch("SET_JWT_STATUS", "");
+    },
+  },
+  computed: {
+    jwt() {
+      return this.$store.state.jwt;
     },
   },
 };
